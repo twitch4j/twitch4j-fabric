@@ -37,6 +37,11 @@
     "website": "https://github.com/twitch4j/twitch4j",
     "repo": "https://github.com/Awakened-Redstone/twitch4j-fabric"
   },
+  "custom": {
+    "twitch4j": {
+      "badges": [ "library" ]
+    }
+  },
   "license": "MIT",
   "icon": "assets/twitch4j/icon.png",
   "environment": "*",
@@ -45,9 +50,6 @@
       "com.github.twitch4j.Twitch4J"
     ]
   },
-  "mixins": [
-    "twitch4j.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.13.3",
     "minecraft": "*"

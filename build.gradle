@@ -1,5 +1,9 @@
+import com.modrinth.minotaur.TaskModrinthUpload
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
-    id 'fabric-loom' version '0.12-SNAPSHOT'
+    id 'fabric-loom' version '0.11-SNAPSHOT'
+    id "com.modrinth.minotaur" version "1.1.0"
     id 'maven-publish'
 }
 
@@ -86,17 +90,27 @@ publishing {
     }
 }
 
-task modrinth(type: com.modrinth.minotaur.TaskModrinthUpload, dependsOn: remapMavenJar) {
+def ENV = System.getenv()
+
+task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
+    input = jar.archiveFile
+    archiveFileName = "${archivesBaseName}-${project.version}-maven.jar"
+    addNestedDependencies = false
+}
+
+build.dependsOn remapMavenJar
+
+task modrinth(type: TaskModrinthUpload, dependsOn: remapMavenJar) {
     onlyIf {
         ENV.MODRINTH_TOKEN
     }
 
     token = ENV.MODRINTH_TOKEN
-    projectId = "amLXPXxi"
+    projectId = "CmHD69Pj"
     versionNumber = version
-    versionName = "[$project.minecraft_version] Subathon - $project.version"
+    versionName = "Twitch4J - $project.version"
     releaseType = "release"
-    changelog = ENV.CHANGELOG ?: "No changelog provided"
+    changelog = "The changelog can be seen at https://github.com/twitch4j/twitch4j/releases/tag/v${project.version}"
 
     uploadFile = remapJar
 
