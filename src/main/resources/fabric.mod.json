@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "twitch4j",
+  "version": "${version}",
+  "name": "Twitch4J",
+  "description": "Java API for Twitch",
+  "authors": [
+    "PhilippHeuer",
+    "iProdigy"
+  ],
+  "contributors": [
+    "stachu540",
+    "sg4e",
+    "Waridley",
+    "tedyoung",
+    "potb",
+    "tadite",
+    "SomniumPrime",
+    "boostchicken",
+    "BelchingJalapeno",
+    "sgdc3",
+    "MaximKulikov",
+    "SethFalco",
+    "FCKJohni",
+    "MaciejGorczyca",
+    "artek2001",
+    "sp0ck1",
+    "LunarWatcher",
+    "p4czyk",
+    "Kaufisch",
+    "sulunemre",
+    "keysym",
+    "Flewp",
+    "jonteohr"
+  ],
+  "contact": {
+    "website": "https://github.com/twitch4j/twitch4j",
+    "repo": "https://github.com/Awakened-Redstone/twitch4j-fabric"
+  },
+  "license": "MIT",
+  "icon": "assets/twitch4j/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.github.twitch4j.Twitch4J"
+    ]
+  },
+  "mixins": [
+    "twitch4j.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.13.3",
+    "minecraft": "*"
+  }
+}
