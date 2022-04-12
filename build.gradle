@@ -1,9 +1,8 @@
-import com.modrinth.minotaur.TaskModrinthUpload
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id 'fabric-loom' version '0.11-SNAPSHOT'
-    id "com.modrinth.minotaur" version "1.1.0"
+    id "com.modrinth.minotaur" version "2.+"
     id 'maven-publish'
 }
 
@@ -21,7 +20,7 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    includeTransitive("com.github.twitch4j:twitch4j:${project.version}") {
+    includeTransitive modImplementation("com.github.twitch4j:twitch4j:${project.version}") {
         exclude group: 'org.slf4j'
         exclude group: 'commons-io', module: 'commons-io'
         exclude group: 'org.apache.commons', module: 'commons-lang3'
@@ -90,8 +89,6 @@ publishing {
     }
 }
 
-def ENV = System.getenv()
-
 task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
     input = jar.archiveFile
     archiveFileName = "${archivesBaseName}-${project.version}-maven.jar"
@@ -99,21 +96,16 @@ task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
 }
 
 build.dependsOn remapMavenJar
+tasks.modrinth.dependsOn(tasks.remapMavenJar)
 
-task modrinth(type: TaskModrinthUpload, dependsOn: remapMavenJar) {
-    onlyIf {
-        ENV.MODRINTH_TOKEN
-    }
-
-    token = ENV.MODRINTH_TOKEN
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
     projectId = "CmHD69Pj"
     versionNumber = version
     versionName = "Twitch4J - $project.version"
-    releaseType = "release"
+    versionType = "release"
     changelog = "The changelog can be seen at https://github.com/twitch4j/twitch4j/releases/tag/v${project.version}"
-
     uploadFile = remapJar
-
-    addGameVersion(project.minecraft_version)
-    addLoader('fabric')
+    gameVersions = [project.minecraft_version]
+    loaders = ["fabric"]
 }
