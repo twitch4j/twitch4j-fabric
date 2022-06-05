@@ -1,11 +1,12 @@
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id 'fabric-loom' version '0.11-SNAPSHOT'
+    id 'fabric-loom' version '0.12+'
     id "com.modrinth.minotaur" version "2.+"
     id 'maven-publish'
 }
 
+archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
@@ -76,16 +77,24 @@ jar {
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            artifactId = archivesBaseName
             from components.java
         }
     }
 
     // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
-        // Add repositories to publish to here.
-        // Notice: This block does NOT have the same function as the block in the top level.
-        // The repositories here will be used for publishing your artifact, not for
-        // retrieving dependencies.
+        //mavenLocal()
+        maven {
+            url = System.getenv().MAVEN_REPO
+            credentials(HttpHeaderCredentials) {
+                name System.getenv().MAVEN_AUTH_HEADER
+                value System.getenv().MAVEN_AUTH_TOKEN
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
     }
 }
 
@@ -99,13 +108,26 @@ build.dependsOn remapMavenJar
 tasks.modrinth.dependsOn(tasks.remapMavenJar)
 
 modrinth {
+    String projectVersion = project.version.toString();
+    List<String> projectVersionNumber = projectVersion.split("-", 2)
+    String projectVersionName = "Release ${projectVersionNumber[0]}"
+    if (projectVersion.contains("beta")) {
+        List<String> projectBeta = projectVersionNumber[1].split("[.]", 2)
+        projectVersionName = "${projectVersionNumber[0]} - Beta ${projectBeta[1]}"
+        versionType = "beta"
+    } else if (projectVersion.contains("alpha")) {
+        List<String> projectAlpha = projectVersionNumber[1].split("[.]", 2)
+        projectVersionName = "${projectVersionNumber[0]} - Alpha ${projectAlpha[1]}"
+        versionType = "alpha"
+    } else if (projectVersion.contains("rc")) {
+        List<String> projectRC = projectVersionNumber[1].split("[.]", 2)
+        projectVersionName = "${projectVersionNumber[0]} - Release Candidate ${projectRC[1]}"
+        versionType = "beta"
+    }
+
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "CmHD69Pj"
-    versionNumber = version
-    versionName = "Twitch4J - $project.version"
-    versionType = "release"
+    versionName = projectVersionName
     changelog = "The changelog can be seen at https://github.com/twitch4j/twitch4j/releases/tag/v${project.version}"
     uploadFile = remapJar
-    gameVersions = [project.minecraft_version]
-    loaders = ["fabric"]
 }
