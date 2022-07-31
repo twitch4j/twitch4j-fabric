@@ -21,13 +21,52 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    includeTransitive modImplementation("com.github.twitch4j:twitch4j:${project.version}") {
-        exclude group: 'org.slf4j'
-        exclude group: 'commons-io', module: 'commons-io'
-        exclude group: 'org.apache.commons', module: 'commons-lang3'
-        exclude group: 'org.checkerframework', module: 'checker-qual'
-        exclude group: 'org.jetbrains', module: 'annotations'
-    }
+    include modImplementation("com.github.twitch4j:twitch4j:${project.version}")
+    include "com.github.twitch4j:twitch4j-chat:${project.version}"
+    include "com.github.twitch4j:twitch4j-extensions:${project.version}"
+    include "com.github.twitch4j:twitch4j-helix:${project.version}"
+    include "com.github.twitch4j:twitch4j-pubsub:${project.version}"
+    include "com.github.twitch4j:twitch4j-eventsub-common:${project.version}"
+    include "com.github.twitch4j:twitch4j-graphql:${project.version}"
+    include "com.github.twitch4j:twitch4j-kraken:${project.version}"
+    include "com.github.twitch4j:twitch4j-messaginginterface:${project.version}"
+    include "com.github.twitch4j:twitch4j-common:${project.version}"
+    include "com.github.twitch4j:twitch4j-auth:${project.version}"
+    include "com.github.twitch4j:twitch4j-client-websocket:${project.version}"
+    include "com.github.twitch4j:twitch4j-util:${project.version}"
+    include "com.github.ben-manes.caffeine:caffeine:2.9.3"
+    include "io.github.openfeign:feign-hystrix:11.9.1"
+    include "com.netflix.hystrix:hystrix-core:1.5.18"
+    include "com.netflix.archaius:archaius-core:0.4.1"
+    include "commons-configuration:commons-configuration:1.10"
+    include "com.github.vladimir-bukhtoyarov:bucket4j-core:7.6.0"
+    include "com.github.philippheuer.credentialmanager:credentialmanager:0.1.4"
+    include "io.github.openfeign:feign-okhttp:11.9.1"
+    include "com.apollographql.apollo:apollo-runtime:2.5.12"
+    include "com.squareup.okhttp3:okhttp:4.10.0"
+    include "com.github.philippheuer.events4j:events4j-core:0.10.0"
+    include "com.github.philippheuer.events4j:events4j-handler-simple:0.10.0"
+    include "io.github.openfeign:feign-slf4j:11.9.1"
+    include "io.github.openfeign:feign-jackson:11.9.1"
+    include "com.neovisionaries:nv-websocket-client:2.14"
+    include "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.13.2"
+    include "com.fasterxml.jackson.core:jackson-databind:2.13.2"
+    include "com.fasterxml.jackson.core:jackson-annotations:2.13.2"
+    include "com.fasterxml.jackson.core:jackson-core:2.13.2"
+    include "com.google.errorprone:error_prone_annotations:2.10.0"
+    include "com.apollographql.apollo:apollo-http-cache-api:2.5.12"
+    include "com.apollographql.apollo:apollo-normalized-cache-jvm:2.5.12"
+    include "com.apollographql.apollo:apollo-normalized-cache-api-jvm:2.5.12"
+    include "com.apollographql.apollo:apollo-api-jvm:2.5.12"
+    include "com.squareup.okio:okio-jvm:3.0.0"
+    include "net.fabricmc:fabric-language-kotlin:1.8.2+kotlin.1.7.10"
+    include "com.github.philippheuer.events4j:events4j-api:0.10.0"
+    include "io.github.openfeign:feign-core:11.9.1"
+    include "com.nytimes.android:cache:2.0.2"
+    include "org.hdrhistogram:HdrHistogram:2.1.9"
+    include "io.reactivex:rxjava:1.2.0"
+    include "com.benasher44:uuid-jvm:0.2.0"
+    include "commons-lang:commons-lang:2.6"
 }
 
 configurations.getByName("includeTransitive").resolvedConfiguration.resolvedArtifacts.forEach(dep -> {
