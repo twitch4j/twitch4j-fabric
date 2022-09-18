@@ -34,11 +34,11 @@
     "jonteohr"
   ],
   "contact": {
-    "website": "https://github.com/twitch4j/twitch4j",
-    "repo": "https://github.com/Awakened-Redstone/twitch4j-fabric"
+    "homepage": "https://github.com/twitch4j/twitch4j",
+    "sources": "https://github.com/Awakened-Redstone/twitch4j-fabric"
   },
   "custom": {
-    "twitch4j": {
+    "modmenu": {
       "badges": [ "library" ]
     }
   },
