@@ -69,7 +69,9 @@ dependencies {
     include "io.reactivex:rxjava:1.2.0"
     include "com.benasher44:uuid-jvm:0.2.0"
     include "commons-lang:commons-lang:2.6"
-    include "io.github.xanthic.cache:cache-bom:0.1.1"
+    include "io.github.xanthic.cache:cache-provider-caffeine:0.1.1"
+    include "io.github.xanthic.cache:cache-core:0.1.1"
+    include "io.github.xanthic.cache:cache-api:0.1.1"
     include "org.mockito:mockito-bom:4.8.0"
 }
 
