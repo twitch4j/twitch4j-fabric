@@ -5,3 +5,14 @@ This is only a mod to allow mods that use the API to work without having to incl
 
 Please only report issues related to the mod, issues with the API report [here](https://github.com/twitch4j/twitch4j/issues)
 For support with the mod ping `@Awakened Redstone#1956` at Twitch4J discord on `#help-any-topic`, else just ask there normally on the help channels
+
+To use the libary add the maven repo and make sure to use `twitch4j-fabric`
+```gradle
+repositories {
+    maven { url "https://maven.awakenedredstone.com"}
+}
+
+dependencies {
+    modImplementation "com.github.twitch4j:twitch4j-fabric:${project.twitch4j_version}"
+}
+```
