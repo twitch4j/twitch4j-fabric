@@ -42,17 +42,18 @@ dependencies {
     include "com.apollographql.apollo:apollo-runtime:2.5.14"
     include "com.benasher44:uuid-jvm:0.2.0"
     include "com.bucket4j:bucket4j_jdk8-core:8.1.0"
-    include "com.fasterxml.jackson:jackson-bom:2.14.1"
     include "com.fasterxml.jackson.core:jackson-annotations:2.14.1"
     include "com.fasterxml.jackson.core:jackson-core:2.14.1"
     include "com.fasterxml.jackson.core:jackson-databind:2.14.1"
     include "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1"
+    include "com.fasterxml.jackson:jackson-bom:2.14.1"
     include "com.github.ben-manes.caffeine:caffeine:2.9.3"
     include "com.github.philippheuer.credentialmanager:credentialmanager:0.1.4"
     include "com.github.philippheuer.events4j:events4j-api:0.10.0"
     include "com.github.philippheuer.events4j:events4j-bom:0.11.0"
     include "com.github.philippheuer.events4j:events4j-core:0.10.0"
     include "com.github.philippheuer.events4j:events4j-handler-simple:0.10.0"
+    include "com.github.tony19:named-regexp:0.2.8"
     include "com.google.errorprone:error_prone_annotations:2.10.0"
     include "com.neovisionaries:nv-websocket-client:2.14"
     include "com.netflix.archaius:archaius-core:0.4.1"
@@ -75,10 +76,6 @@ dependencies {
     include "org.hdrhistogram:HdrHistogram:2.1.9"
     include "org.mockito:mockito-bom:4.9.0"
 }
-
-configurations.getByName("includeTransitive").resolvedConfiguration.resolvedArtifacts.forEach(dep -> {
-    dependencies.add("include", dep.id.componentIdentifier.displayName)
-})
 
 processResources {
     inputs.property "version", project.version
