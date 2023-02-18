@@ -35,7 +35,7 @@
   ],
   "contact": {
     "homepage": "https://github.com/twitch4j/twitch4j",
-    "sources": "https://github.com/Awakened-Redstone/twitch4j-fabric"
+    "sources": "https://github.com/twitch4j/twitch4j-fabric"
   },
   "custom": {
     "modmenu": {
@@ -46,7 +46,7 @@
   "icon": "assets/twitch4j/icon.png",
   "environment": "*",
   "depends": {
-    "fabricloader": ">=0.13.3",
+    "fabricloader": ">=0.14.7",
     "minecraft": "*"
   }
 }
