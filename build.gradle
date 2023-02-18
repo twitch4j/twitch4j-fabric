@@ -12,7 +12,7 @@ def minecraftVersions = file(MINECRAFT_VERSIONS_FILE).text.readLines()
 def CHANGELOG = new File('CHANGELOG.md').exists() ? new File('CHANGELOG.md').text : ""
 
 archivesBaseName = project.archives_base_name
-version = project.library_version + (project.mod_patch == "0" ? "" : "+patch.${project.mod_patch}")
+version = "${project.library_version}+${project.mod_version}"
 group = project.maven_group
 
 repositories {}
