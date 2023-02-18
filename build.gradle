@@ -222,4 +222,4 @@ task updateVersions {
 }
 
 publish.dependsOn checkVersion
-project.tasks.modrinth.dependsOn checkVersion
+project.tasks.modrinth.dependsOn updateVersions
