@@ -175,7 +175,7 @@ modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "CmHD69Pj"
     versionName = projectVersionName
-    changelog = "### The Twitch4J changelog can be seen at https://github.com/twitch4j/twitch4j/releases/tag/v${project.version}\n\n" + CHANGELOG
+    changelog = "### The Twitch4J changelog can be seen at https://github.com/twitch4j/twitch4j/releases/tag/v${project.library_version}\n\n" + CHANGELOG
     gameVersions = minecraftVersions
     uploadFile = remapJar
 }
