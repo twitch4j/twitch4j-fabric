@@ -1,18 +1,19 @@
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
-    id 'fabric-loom' version '0.12+'
+    id 'fabric-loom' version '1.1-SNAPSHOT'
     id "com.modrinth.minotaur" version "2.+"
     id 'maven-publish'
 }
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+def MINECRAFT_VERSIONS_FILE = "generated/minecraft_versions.txt"
+def minecraftVersions = file(MINECRAFT_VERSIONS_FILE).text.readLines()
 
-configurations {
-    includeTransitive
-}
+def CHANGELOG = new File('CHANGELOG.md').exists() ? new File('CHANGELOG.md').text : ""
+
+archivesBaseName = project.archives_base_name
+version = "${project.library_version}+${project.mod_version}"
+group = project.maven_group
 
 repositories {}
 
@@ -21,19 +22,23 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    include modImplementation("com.github.twitch4j:twitch4j:${project.version}")
-    include "com.github.twitch4j:twitch4j-auth:${project.version}"
-    include "com.github.twitch4j:twitch4j-chat:${project.version}"
-    include "com.github.twitch4j:twitch4j-client-websocket:${project.version}"
-    include "com.github.twitch4j:twitch4j-common:${project.version}"
-    include "com.github.twitch4j:twitch4j-eventsub-common:${project.version}"
-    include "com.github.twitch4j:twitch4j-extensions:${project.version}"
-    include "com.github.twitch4j:twitch4j-graphql:${project.version}"
-    include "com.github.twitch4j:twitch4j-helix:${project.version}"
-    include "com.github.twitch4j:twitch4j-kraken:${project.version}"
-    include "com.github.twitch4j:twitch4j-messaginginterface:${project.version}"
-    include "com.github.twitch4j:twitch4j-pubsub:${project.version}"
-    include "com.github.twitch4j:twitch4j-util:${project.version}"
+    testImplementation(platform("org.junit:junit-bom:5.9.2"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+
+    include modApi("com.github.twitch4j:twitch4j:${project.library_version}")
+    include "com.github.twitch4j:twitch4j-auth:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-chat:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-client-websocket:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-common:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-eventsub-common:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-eventsub-websocket:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-extensions:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-graphql:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-helix:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-kraken:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-messaginginterface:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-pubsub:${project.library_version}"
+    include "com.github.twitch4j:twitch4j-util:${project.library_version}"
 
     include "com.apollographql.apollo:apollo-api-jvm:2.5.14"
     include "com.apollographql.apollo:apollo-http-cache-api:2.5.14"
@@ -42,17 +47,17 @@ dependencies {
     include "com.apollographql.apollo:apollo-runtime:2.5.14"
     include "com.benasher44:uuid-jvm:0.2.0"
     include "com.bucket4j:bucket4j_jdk8-core:8.1.0"
-    include "com.fasterxml.jackson.core:jackson-annotations:2.14.1"
-    include "com.fasterxml.jackson.core:jackson-core:2.14.1"
-    include "com.fasterxml.jackson.core:jackson-databind:2.14.1"
-    include "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1"
-    include "com.fasterxml.jackson:jackson-bom:2.14.1"
+    include "com.fasterxml.jackson.core:jackson-annotations:2.14.2"
+    include "com.fasterxml.jackson.core:jackson-core:2.14.2"
+    include "com.fasterxml.jackson.core:jackson-databind:2.14.2"
+    include "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
+    include "com.fasterxml.jackson:jackson-bom:2.14.2"
     include "com.github.ben-manes.caffeine:caffeine:2.9.3"
-    include "com.github.philippheuer.credentialmanager:credentialmanager:0.1.4"
-    include "com.github.philippheuer.events4j:events4j-api:0.10.0"
+    include "com.github.philippheuer.credentialmanager:credentialmanager:0.2.1"
+    include "com.github.philippheuer.events4j:events4j-api:0.11.0"
     include "com.github.philippheuer.events4j:events4j-bom:0.11.0"
-    include "com.github.philippheuer.events4j:events4j-core:0.10.0"
-    include "com.github.philippheuer.events4j:events4j-handler-simple:0.10.0"
+    include "com.github.philippheuer.events4j:events4j-core:0.11.0"
+    include "com.github.philippheuer.events4j:events4j-handler-simple:0.11.0"
     include "com.github.tony19:named-regexp:0.2.8"
     include "com.google.errorprone:error_prone_annotations:2.10.0"
     include "com.neovisionaries:nv-websocket-client:2.14"
@@ -74,7 +79,6 @@ dependencies {
     include "io.reactivex:rxjava:1.2.0"
     include "net.fabricmc:fabric-language-kotlin:1.8.6+kotlin.1.7.21"
     include "org.hdrhistogram:HdrHistogram:2.1.9"
-    include "org.mockito:mockito-bom:4.9.0"
 }
 
 processResources {
@@ -104,10 +108,6 @@ java {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
     archivesBaseName = project.archives_base_name
-    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-    // if it is present.
-    // If you remove this line, sources will not be generated.
-    withSourcesJar()
 }
 
 jar {
@@ -154,23 +154,64 @@ modrinth {
     String projectVersion = project.version.toString()
     List<String> projectVersionNumber = projectVersion.split("-", 2)
     String projectVersionName = "Release ${projectVersionNumber[0]}"
-    if (projectVersion.contains("beta")) {
-        List<String> projectBeta = projectVersionNumber[1].split("[.]", 2)
-        projectVersionName = "${projectVersionNumber[0]} - Beta ${projectBeta[1]}"
-        versionType = "beta"
-    } else if (projectVersion.contains("alpha")) {
-        List<String> projectAlpha = projectVersionNumber[1].split("[.]", 2)
-        projectVersionName = "${projectVersionNumber[0]} - Alpha ${projectAlpha[1]}"
-        versionType = "alpha"
-    } else if (projectVersion.contains("rc")) {
-        List<String> projectRC = projectVersionNumber[1].split("[.]", 2)
-        projectVersionName = "${projectVersionNumber[0]} - Release Candidate ${projectRC[1]}"
-        versionType = "beta"
+    if (projectVersionNumber.size() == 2) {
+        List<String> typeNumber = projectVersionNumber[1].split("\\.", 2)
+        if (projectVersionNumber[1].startsWith("rc")) {
+            projectVersionName = "${projectVersionNumber[0]} - Release Candidate ${typeNumber[1]}"
+            versionType = "beta" //Modrinth doesn't have RC so I use beta
+        } else if (projectVersionNumber[1].startsWith("beta")) {
+            projectVersionName = "${projectVersionNumber[0]} - Beta ${typeNumber[1]}"
+            versionType = "beta"
+        } else if (projectVersionNumber[1].startsWith("alpha")) {
+            projectVersionName = "${projectVersionNumber[0]} - Alpha ${typeNumber[1]}"
+            versionType = "alpha"
+        }
     }
 
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "CmHD69Pj"
     versionName = projectVersionName
-    changelog = "The changelog can be seen at https://github.com/twitch4j/twitch4j/releases/tag/v${project.version}"
+    changelog = "### The Twitch4J changelog can be seen at https://github.com/twitch4j/twitch4j/releases/tag/v${project.library_version}\n\n" + CHANGELOG
+    gameVersions = minecraftVersions
     uploadFile = remapJar
 }
+
+import groovy.json.JsonSlurper
+import groovy.xml.XmlSlurper
+
+import java.nio.charset.StandardCharsets
+
+task updateMinecraftVersions {
+    group = "update"
+    doFirst {
+        def json = new URL("https://meta.fabricmc.net/v2/versions/game").text
+        def versions = new JsonSlurper().parseText(json)
+        def output = new StringBuilder()
+        for (def version : versions) {
+            if (version.stable) {
+                output.append("${version.version}")
+                output.append("\n")
+            }
+        }
+        file(MINECRAFT_VERSIONS_FILE).setText(output.toString(), StandardCharsets.UTF_8.name())
+    }
+}
+
+task checkVersion {
+    doFirst {
+        def xml = new URL("https://maven.awakenedredstone.com/com/github/twitch4j/twitch4j-fabric/maven-metadata.xml").text
+        def metadata = new XmlSlurper().parseText(xml)
+        def versions = metadata.versioning.versions.version*.text()
+        if (versions.contains(version)) {
+            throw new RuntimeException("${version} has already been released!")
+        }
+    }
+}
+
+task updateVersions {
+    group = "update"
+    dependsOn(updateMinecraftVersions)
+}
+
+publish.dependsOn checkVersion
+project.tasks.modrinth.dependsOn updateVersions

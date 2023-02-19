@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "id": "twitch4j",
+  "id": "twitch4j-test",
   "version": "${version}",
-  "name": "Twitch4J",
-  "description": "Java API for Twitch",
+  "name": "Twitch4J Tests",
+  "description": "The tests for Twitch4J-Fabric",
   "authors": [
     "PhilippHeuer",
     "iProdigy"
@@ -33,6 +33,11 @@
     "Flewp",
     "jonteohr"
   ],
+  "entrypoints": {
+    "main": [
+      "com.awakenedredstone.test.T4JTest"
+    ]
+  },
   "contact": {
     "homepage": "https://github.com/twitch4j/twitch4j",
     "sources": "https://github.com/twitch4j/twitch4j-fabric"
@@ -43,10 +48,11 @@
     }
   },
   "license": "MIT",
-  "icon": "assets/twitch4j/icon.png",
+  "icon": "assets/twitch4j-tests/icon.png",
   "environment": "*",
   "depends": {
-    "fabricloader": ">=0.14.7",
+    "fabricloader": ">=0.13.3",
+    "twitch4j": "1.14.0",
     "minecraft": "*"
   }
 }
