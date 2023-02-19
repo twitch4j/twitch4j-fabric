@@ -154,22 +154,18 @@ modrinth {
     String projectVersion = project.version.toString()
     List<String> projectVersionNumber = projectVersion.split("-", 2)
     String projectVersionName = "Release ${projectVersionNumber[0]}"
-    if (projectVersion.contains("patch")) {
-        List<String> _projectVersionNumber = projectVersion.split("\\+", 2)
-        List<String> projectPatch = _projectVersionNumber[1].split("\\.", 2)
-        projectVersionName = "${_projectVersionNumber[0]} - Patch ${projectPatch[1]}"
-    } else if (projectVersion.contains("rc")) {
-        List<String> projectRC = projectVersionNumber[1].split("\\.", 2)
-        projectVersionName = "${projectVersionNumber[0]} - Release Candidate ${projectRC[1]}"
-        versionType = "beta"
-    } else if (projectVersion.contains("beta")) {
-        List<String> projectBeta = projectVersionNumber[1].split("\\.", 2)
-        projectVersionName = "${projectVersionNumber[0]} - Beta ${projectBeta[1]}"
-        versionType = "beta"
-    } else if (projectVersion.contains("alpha")) {
-        List<String> projectAlpha = projectVersionNumber[1].split("\\.", 2)
-        projectVersionName = "${projectVersionNumber[0]} - Alpha ${projectAlpha[1]}"
-        versionType = "alpha"
+    if (projectVersionNumber.size() == 2) {
+        List<String> typeNumber = projectVersionNumber[1].split("\\.", 2)
+        if (projectVersionNumber[1].startsWith("rc")) {
+            projectVersionName = "${projectVersionNumber[0]} - Release Candidate ${typeNumber[1]}"
+            versionType = "beta" //Modrinth doesn't have RC so I use beta
+        } else if (projectVersionNumber[1].startsWith("beta")) {
+            projectVersionName = "${projectVersionNumber[0]} - Beta ${typeNumber[1]}"
+            versionType = "beta"
+        } else if (projectVersionNumber[1].startsWith("alpha")) {
+            projectVersionName = "${projectVersionNumber[0]} - Alpha ${typeNumber[1]}"
+            versionType = "alpha"
+        }
     }
 
     token = System.getenv("MODRINTH_TOKEN")
@@ -191,14 +187,10 @@ task updateMinecraftVersions {
         def json = new URL("https://meta.fabricmc.net/v2/versions/game").text
         def versions = new JsonSlurper().parseText(json)
         def output = new StringBuilder()
-        def i = 0
         for (def version : versions) {
             if (version.stable) {
-                if (i > 0) {
-                    output.append("\n")
-                }
                 output.append("${version.version}")
-                i++
+                output.append("\n")
             }
         }
         file(MINECRAFT_VERSIONS_FILE).setText(output.toString(), StandardCharsets.UTF_8.name())
