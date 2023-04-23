@@ -52,7 +52,7 @@
   "environment": "*",
   "depends": {
     "fabricloader": ">=0.13.3",
-    "twitch4j": "1.14.0",
+    "twitch4j": "*",
     "minecraft": "*"
   }
 }
