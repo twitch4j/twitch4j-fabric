@@ -46,18 +46,18 @@ dependencies {
     include "com.apollographql.apollo:apollo-normalized-cache-jvm:2.5.14"
     include "com.apollographql.apollo:apollo-runtime:2.5.14"
     include "com.benasher44:uuid-jvm:0.2.0"
-    include "com.bucket4j:bucket4j_jdk8-core:8.2.0"
-    include "com.fasterxml.jackson.core:jackson-annotations:2.14.2"
-    include "com.fasterxml.jackson.core:jackson-core:2.14.2"
-    include "com.fasterxml.jackson.core:jackson-databind:2.14.2"
-    include "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.2"
-    include "com.fasterxml.jackson:jackson-bom:2.14.2"
+    include "com.bucket4j:bucket4j_jdk8-core:8.3.0"
+    include "com.fasterxml.jackson.core:jackson-annotations:2.15.2"
+    include "com.fasterxml.jackson.core:jackson-core:2.15.2"
+    include "com.fasterxml.jackson.core:jackson-databind:2.15.2"
+    include "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2"
+    include "com.fasterxml.jackson:jackson-bom:2.15.2"
     include "com.github.ben-manes.caffeine:caffeine:2.9.3"
-    include "com.github.philippheuer.credentialmanager:credentialmanager:0.2.1"
-    include "com.github.philippheuer.events4j:events4j-api:0.11.0"
-    include "com.github.philippheuer.events4j:events4j-bom:0.11.0"
-    include "com.github.philippheuer.events4j:events4j-core:0.11.0"
-    include "com.github.philippheuer.events4j:events4j-handler-simple:0.11.0"
+    include "com.github.philippheuer.credentialmanager:credentialmanager:0.2.2"
+    include "com.github.philippheuer.events4j:events4j-api:0.12.1"
+    include "com.github.philippheuer.events4j:events4j-bom:0.12.1"
+    include "com.github.philippheuer.events4j:events4j-core:0.12.1"
+    include "com.github.philippheuer.events4j:events4j-handler-simple:0.12.1"
     include "com.github.tony19:named-regexp:0.2.8"
     include "com.google.errorprone:error_prone_annotations:2.10.0"
     include "com.neovisionaries:nv-websocket-client:2.14"
@@ -68,14 +68,14 @@ dependencies {
     include "com.squareup.okio:okio-jvm:3.0.0"
     include "commons-configuration:commons-configuration:1.10"
     include "commons-lang:commons-lang:2.6"
-    include "io.github.openfeign:feign-core:12.3"
-    include "io.github.openfeign:feign-hystrix:12.3"
-    include "io.github.openfeign:feign-jackson:12.3"
-    include "io.github.openfeign:feign-okhttp:12.3"
-    include "io.github.openfeign:feign-slf4j:12.3"
-    include "io.github.xanthic.cache:cache-api:0.2.0"
-    include "io.github.xanthic.cache:cache-core:0.2.0"
-    include "io.github.xanthic.cache:cache-provider-caffeine:0.2.0"
+    include "io.github.openfeign:feign-core:12.4"
+    include "io.github.openfeign:feign-hystrix:12.4"
+    include "io.github.openfeign:feign-jackson:12.4"
+    include "io.github.openfeign:feign-okhttp:12.4"
+    include "io.github.openfeign:feign-slf4j:12.4"
+    include "io.github.xanthic.cache:cache-api:0.3.0"
+    include "io.github.xanthic.cache:cache-core:0.3.0"
+    include "io.github.xanthic.cache:cache-provider-caffeine:0.3.0"
     include "io.reactivex:rxjava:1.2.0"
     include "net.fabricmc:fabric-language-kotlin:1.9.3+kotlin.1.8.20"
     include "org.hdrhistogram:HdrHistogram:2.1.9"
@@ -141,7 +141,8 @@ publishing {
     }
 }
 
-task remapMavenJar(type: RemapJarTask, dependsOn: jar) {
+tasks.register('remapMavenJar', RemapJarTask) {
+    dependsOn jar
     input = jar.archiveFile
     archiveFileName = "${archivesBaseName}-${project.version}-maven.jar"
     addNestedDependencies = false
@@ -181,7 +182,7 @@ import groovy.xml.XmlSlurper
 
 import java.nio.charset.StandardCharsets
 
-task updateMinecraftVersions {
+tasks.register('updateMinecraftVersions') {
     group = "update"
     doFirst {
         def json = new URL("https://meta.fabricmc.net/v2/versions/game").text
@@ -197,7 +198,7 @@ task updateMinecraftVersions {
     }
 }
 
-task checkVersion {
+tasks.register('checkVersion') {
     doFirst {
         def xml = new URL("https://maven.awakenedredstone.com/com/github/twitch4j/twitch4j-fabric/maven-metadata.xml").text
         def metadata = new XmlSlurper().parseText(xml)
@@ -208,7 +209,7 @@ task checkVersion {
     }
 }
 
-task updateVersions {
+tasks.register('updateVersions') {
     group = "update"
     dependsOn(updateMinecraftVersions)
 }
