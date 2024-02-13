@@ -59,7 +59,7 @@ dependencies {
     include "com.github.philippheuer.events4j:events4j-core:0.12.1"
     include "com.github.philippheuer.events4j:events4j-handler-simple:0.12.1"
     include "com.github.tony19:named-regexp:0.2.8"
-    //include "com.google.errorprone:error_prone_annotations:2.10.0"
+    include "com.google.errorprone:error_prone_annotations:2.10.0"
     include "com.neovisionaries:nv-websocket-client:2.14"
     include "com.netflix.archaius:archaius-core:0.4.1"
     include "com.netflix.hystrix:hystrix-core:1.5.18"
