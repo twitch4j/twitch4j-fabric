@@ -57,7 +57,7 @@ dependencies {
     include "com.github.philippheuer.events4j:events4j-api:0.12.2"
     include "com.github.philippheuer.events4j:events4j-bom:0.12.2"
     include "com.github.philippheuer.events4j:events4j-core:0.12.2"
-    include "com.github.philippheuer.events4j:events4j-handler-simple:0.12.1"
+    include "com.github.philippheuer.events4j:events4j-handler-simple:0.12.2"
     include "com.github.tony19:named-regexp:1.0.0"
     include "com.google.errorprone:error_prone_annotations:2.10.0"
     include "com.neovisionaries:nv-websocket-client:2.14"
