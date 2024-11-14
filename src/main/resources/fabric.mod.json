@@ -47,7 +47,7 @@
   "icon": "assets/twitch4j/icon.png",
   "environment": "*",
   "depends": {
-    "fabricloader": ">=0.14.7",
+    "fabricloader": ">=0.14.23",
     "minecraft": "*"
   }
 }
