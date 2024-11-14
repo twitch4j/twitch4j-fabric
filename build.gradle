@@ -1,13 +1,12 @@
 import net.fabricmc.loom.task.RemapJarTask
+import groovy.json.JsonSlurper
+import groovy.xml.XmlSlurper
 
 plugins {
     id 'fabric-loom' version '1.1-SNAPSHOT'
     id "com.modrinth.minotaur" version "2.+"
     id 'maven-publish'
 }
-
-def MINECRAFT_VERSIONS_FILE = "generated/minecraft_versions.txt"
-def minecraftVersions = file(MINECRAFT_VERSIONS_FILE).text.readLines()
 
 def CHANGELOG = new File('CHANGELOG.md').exists() ? new File('CHANGELOG.md').text : ""
 
@@ -152,6 +151,15 @@ build.dependsOn remapMavenJar
 tasks.modrinth.dependsOn(tasks.remapMavenJar)
 
 modrinth {
+    def json = new URL("https://meta.fabricmc.net/v2/versions/game").text
+    def versions = new JsonSlurper().parseText(json)
+    def minecraftVersions = new ArrayList<String>()
+    for (def version : versions) {
+        if (version.stable) {
+            minecraftVersions.add(version.version)
+        }
+    }
+
     String projectVersion = project.version.toString()
     List<String> projectVersionNumber = projectVersion.split("-", 2)
     String projectVersionName = "Release ${projectVersionNumber[0]}"
@@ -178,27 +186,6 @@ modrinth {
     uploadFile = remapJar
 }
 
-import groovy.json.JsonSlurper
-import groovy.xml.XmlSlurper
-
-import java.nio.charset.StandardCharsets
-
-tasks.register('updateMinecraftVersions') {
-    group = "update"
-    doFirst {
-        def json = new URL("https://meta.fabricmc.net/v2/versions/game").text
-        def versions = new JsonSlurper().parseText(json)
-        def output = new StringBuilder()
-        for (def version : versions) {
-            if (version.stable) {
-                output.append("${version.version}")
-                output.append("\n")
-            }
-        }
-        file(MINECRAFT_VERSIONS_FILE).setText(output.toString(), StandardCharsets.UTF_8.name())
-    }
-}
-
 tasks.register('checkVersion') {
     doFirst {
         def xml = new URL("https://maven.awakenedredstone.com/com/github/twitch4j/twitch4j-fabric/maven-metadata.xml").text
@@ -210,10 +197,4 @@ tasks.register('checkVersion') {
     }
 }
 
-tasks.register('updateVersions') {
-    group = "update"
-    dependsOn(updateMinecraftVersions)
-}
-
 publish.dependsOn checkVersion
-project.tasks.modrinth.dependsOn updateVersions
