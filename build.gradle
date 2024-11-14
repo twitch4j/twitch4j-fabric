@@ -3,7 +3,7 @@ import groovy.json.JsonSlurper
 import groovy.xml.XmlSlurper
 
 plugins {
-    id 'fabric-loom' version '1.1-SNAPSHOT'
+    id 'fabric-loom' version '1.8-SNAPSHOT'
     id "com.modrinth.minotaur" version "2.+"
     id 'maven-publish'
 }
