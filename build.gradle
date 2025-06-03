@@ -43,8 +43,8 @@ dependencies {
 
     var apollo = "2.5.14"
     var events4j = "0.12.2"
-    var jackson = "2.18.2"
-    var openfeign = "13.5"
+    var jackson = "2.19.0"
+    var openfeign = "13.6"
     var xanthic = "0.7.1"
 
     include "com.apollographql.apollo:apollo-api-jvm:$apollo"
